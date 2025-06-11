@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryolor Services - Expertise Technique | Maintenance Industriel et Médical</title>
+    <!-- REMPLACÉ: Tailwind CSS local (doit être généré) -->
+    <link rel="stylesheet" href="./css/tailwind-output.css">
+    <!-- REMPLACÉ: Google Fonts Inter (ne fonctionnera que si les polices sont téléchargées et auto-hébergées, sinon utilisera la police par default du navigateur) -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"> -->
+    <!-- REMPLACÉ: Font Awesome local (doit être téléchargé) -->
+    <link rel="stylesheet" href="./css/all.min.css">
+    <!-- La configuration Tailwind n'est nécessaire que si vous utilisez le CDN JIT.
+         Pour une utilisation hors ligne avec un fichier tailwind-output.css généré, cette balise script n'est pas requise. -->
+    <!--
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1a56db', /* Main blue for accents */
+                        secondary: '#0e2b5c', /* Dark blue for primary text and background */
+                        accent: '#2196f3', /* Vivid blue for buttons and icons */
+                        light: '#f8faff' /* Very light blue/gray for background */
+                    },
+                    fontFamily: {
+                        // 'Inter' ne sera disponible que si la police est téléchargée et auto-hébergée.
+                        // Sinon, le navigateur utilisera une police sans-serif par default.
+                        inter: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; /* Fallback to sans-serif if Inter is not loaded locally */
+            background-color: #f8faff;
+            scroll-behavior: smooth;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #0e2b5c 0%, #1a56db 100%);
+        }
+        
+        .service-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(26, 86, 219, 0.1);
+            /* Ajout pour rendre la carte cliquable plus intuitivement */
+            cursor: pointer; 
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(26, 86, 219, 0.15);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .gallery-item {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            height: 220px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            cursor: zoom-in; /* Indicate that the image is clickable for zoom */
+        }
+        
+        .gallery-item img {
+            object-fit: cover; /* Ensures image covers the space */
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            color: white;
+            padding: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex; /* Use flex to center text if needed */
+            align-items: flex-end; /* Align text at the bottom */
+            justify-content: center; /* Center horizontally */
+            text-align: center;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        .nav-link {
+            position: relative;
+            padding: 0.5rem 0;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #2196f3;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .section-title {
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: #2196f3;
+            border-radius: 2px;
+        }
+        
+        .contact-form input,
+        .contact-form textarea,
+        .contact-form select { /* Added select for transition and focus */
+            transition: all 0.3s ease;
+            border: 1px solid #d1d5db;
+        }
+        
+        .contact-form input:focus,
+        .contact-form textarea:focus,
+        .contact-form select:focus {
+            border-color: #2196f3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out; /* Added ease-out for smoother effect */
+        }
+        
+        .accordion.active .accordion-content {
+            max-height: 1000px; /* Large value to accommodate all content */
+        }
+        
+        .accordion.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* Removed .testimonial-card as the section is removed */
+        /* .testimonial-card {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(26, 86, 219, 0.1);
+        } */
+        
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .scroll-top.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #1a56db 0%, #0e2b5c 100%);
+            color: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* --- Mobile Navigation Specific Styles --- */
+        #mobile-menu {
+            position: fixed; /* Remains fixed to take full height */
+            top: 5.5rem; /* Adjust based on fixed header height */
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 5.5rem); /* Takes remaining height of the viewport */
+            overflow-y: auto; /* Allows scrolling of menu content */
+            -webkit-overflow-scrolling: touch; /* For smoother iOS scrolling */
+            z-index: 49; /* Below the header */
+            background-color: #0e2b5c; /* Background color from the new theme */
+            color: white;
+            padding-bottom: 2rem; /* Space at the bottom for scrolling */
+        }
+
+        #mobile-menu a {
+            padding: 0.75rem 1rem;
+            display: block;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background-color 0.2s ease;
+            color: white; /* Color of mobile menu links */
+        }
+        #mobile-menu a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* New CSS for mobile-services-dropdown visibility */
+        .services-dropdown.active {
+            display: block !important; /* Ensure it overrides 'hidden' */
+        }
+
+        /* Header height adjustment for mobile menu top */
+        @media (max-width: 767px) {
+            header {
+                height: 5.5rem; /* Adjust header height if needed */
+            }
+            .section-title::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Styles pour la modale d'image */
+        .image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Assure que la modale est au-dessus de tout */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .image-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .image-modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-modal-content img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* Garde le ratio d'aspect de l'image */
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* MODIFIED: Adjusted position and size for better mobile visibility */
+        .image-modal-close {
+            position: absolute;
+            top: 20px; /* Increased from 15px */
+            right: 20px; /* Decreased from 25px to bring it closer to edge */
+            color: white;
+            font-size: 48px; /* Increased from 40px for better touch target */
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            /* Ensure it's above the image content */
+            z-index: 1001; 
+        }
+
+        .image-modal-close:hover,
+        .image-modal-close:focus {
+            color: #ccc;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Responsive adjustments for the close button on smaller screens */
+        @media (max-width: 640px) {
+            .image-modal-close {
+                top: 10px; /* Further adjust for very small screens */
+                right: 10px;
+                font-size: 40px; /* Slightly smaller for mobile */
+            }
+        }
+    </style>
+</head>
+<body class="font-inter text-gray-800">
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <!-- Remplacé le div "CS" par une balise img pour le logo -->
+                    <img src="./images/cryolor-logo.png" alt="Cryolor Services Logo" class="w-14 h-14 object-contain mr-3">
+                    <div>
+                        <h1 class="text-xl font-bold text-secondary">Cryolor Services</h1>
+                        <p class="text-xs text-gray-500">Expertise technique</p>
+                        <p class="text-xs text-gray-500">Maintenance Industriel et Médical</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#accueil" class="nav-link text-secondary font-medium">Accueil</a>
+                    <a href="#services" class="nav-link text-secondary font-medium">Services</a>
+                    <a href="#apropos" class="nav-link text-secondary font-medium">À Propos</a>
+                    <!-- Removed Testimonials link -->
+                    <a href="#contact" class="nav-link text-secondary font-medium">Contact</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden text-secondary">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden">
+            <div class="flex flex-col">
+                <a href="#accueil" class="nav-link text-white font-medium">Accueil</a>
+                <div class="relative w-full">
+                    <a href="#" class="nav-link text-white font-medium flex justify-between items-center" id="mobile-services-toggle">
+                        Services <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                    </a>
+                    <!-- Simplified Services Dropdown for Mobile -->
+                    <div id="mobile-services-dropdown" class="services-dropdown hidden">
+                        <nav class="text-left w-full">
+                            <ul>
+                                <!-- Direct links to service sections -->
+                                <li><a href="#medical-details" class="nav-link text-white font-medium">Appareils Médicaux</a></li>
+                                <li><a href="#electricite-details" class="nav-link text-white font-medium">Électricité, Sécurité & Réseaux</a></li>
+                                <li><a href="#plomberie-details" class="nav-link text-white font-medium">Plomberie & Chauffage</a></li>
+                                <li><a href="#froid-details" class="nav-link text-white font-medium">Froid Industriel & Climatisation</a></li>
+                                <li><a href="#cryo-details" class="nav-link text-white font-medium">Maintenance Cryogénique</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <a href="#apropos" class="nav-link text-white font-medium">À Propos</a>
+                <!-- Removed Testimonials link -->
+                <a href="#contact" class="nav-link text-white font-medium">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="accueil" class="hero-gradient text-white py-20 md:py-28">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6">Solutions techniques pour vos équipements essentiels</h1>
+                <p class="text-xl mb-10 text-blue-100 max-w-2xl mx-auto">
+                    Chez Cryolor Services, nous sommes votre partenaire de confiance pour une multitude de services essentiels, garantissant performance et fiabilité pour vos équipements et installations. Notre mission est de fournir des solutions de haute qualité, innovantes et fiables, adaptées aux besoins spécifiques de nos clients.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#services" class="bg-white text-primary font-bold py-3 px-8 rounded-full hover:bg-blue-50 transition duration-300">Découvrir nos services</a>
+                    <a href="#contact" class="border-2 border-white text-white font-bold py-3 px-8 rounded-full hover:bg-white hover:text-primary transition duration-300">Nous contacter</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="py-12 bg-light">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="stat-card p-6 text-center">
+                    <div class="text-3xl font-bold mb-2">15+</div>
+                    <div class="text-sm">Années d'expérience</div>
+                </div>
+                <div class="stat-card p-6 text-center">
+                    <div class="text-3xl font-bold mb-2">+</div>
+                    <div class="text-sm">Clients satisfaits</div>
+                </div>
+                <div class="stat-card p-6 text-center">
+                    <div class="text-3xl font-bold mb-2">24/7</div>
+                    <div class="text-sm">Assistance technique</div>
+                </div>
+                <div class="stat-card p-6 text-center">
+                    <div class="text-3xl font-bold mb-2">50+</div>
+                    <div class="text-sm">Techniciens experts</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Overview -->
+    <section id="services" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-secondary mb-4 section-title inline-block">Nos Services Spécialisés</h2>
+                <p class="text-gray-600 mt-6">Nous proposons une gamme complète de services techniques pour répondre à tous vos besoins en maintenance, réparation et installation.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1: Appareils Médicaux -->
+                <div class="service-card bg-white rounded-xl p-6">
+                    <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6">
+                        <i class="fas fa-stethoscope text-accent text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">Appareils Médicaux</h3>
+                    <p class="text-gray-600 mb-4">Réparation, entretien préventif, diagnostic précis, formation et assistance technique pour vos équipements médicaux essentiels.</p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Diagnostic précis</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Réparation rapide</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Entretien préventif</li>
+                    </ul>
+                    <!-- Le lien "En savoir plus" déclenchera la navigation de la carte entière -->
+                    <a href="#medical-details" class="text-accent font-medium inline-flex items-center service-link">En savoir plus <i class="fas fa-arrow-right ml-2 text-sm"></i></a>
+                </div>
+
+                <!-- Service Card 2: Électricité, Sécurité & Réseaux -->
+                <div class="service-card bg-white rounded-xl p-6">
+                    <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6">
+                        <i class="fas fa-plug text-accent text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">Électricité, Sécurité & Réseaux</h3>
+                    <p class="text-gray-600 mb-4">Installation et réparation d'armoires électriques, électricité de bâtiment, tirage de câbles, caméras de surveillance, alarmes et réseaux informatiques.</p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Armoires électriques</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Caméras de surveillance</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Réseaux informatiques</li>
+                    </ul>
+                    <a href="#electricite-details" class="text-accent font-medium inline-flex items-center service-link">En savoir plus <i class="fas fa-arrow-right ml-2 text-sm"></i></a>
+                </div>
+
+                <!-- Service Card 3: Plomberie & Chauffage -->
+                <div class="service-card bg-white rounded-xl p-6">
+                    <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6">
+                        <i class="fas fa-faucet text-accent text-2xl"></i> <!-- Icône mise à jour ici -->
+                    </div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">Plomberie & Chauffage</h3>
+                    <p class="text-gray-600 mb-4">Réparation de chauffage central et chauffe-eau, installation de gaz et d'eau, sanitaires et systèmes de filtration pour votre confort.</p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Réparation chauffage</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Installation plomberie</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Systèmes de filtration</li>
+                    </ul>
+                    <a href="#plomberie-details" class="text-accent font-medium inline-flex items-center service-link">En savoir plus <i class="fas fa-arrow-right ml-2 text-sm"></i></a>
+                </div>
+
+                <!-- Service Card 4: Froid Industriel & Climatisation -->
+                <div class="service-card bg-white rounded-xl p-6">
+                    <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6">
+                        <i class="fas fa-snowflake text-accent text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">Froid Industriel & Climatisation</h3>
+                    <p class="text-gray-600 mb-4">Installation, maintenance et réparation de climatiseurs, chambres froides, réfrigérateurs et congélateurs, incluant des solutions Fentene Fresh.</p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Installation systèmes</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Maintenance préventive</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Spécialités techniques</li>
+                    </ul>
+                    <a href="#froid-details" class="text-accent font-medium inline-flex items-center service-link">En savoir plus <i class="fas fa-arrow-right ml-2 text-sm"></i></a>
+                </div>
+
+                <!-- Service Card 5: Maintenance Cryogénique -->
+                <div class="service-card bg-white rounded-xl p-6">
+                    <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6">
+                        <i class="fas fa-flask text-accent text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">Maintenance Cryogénique</h3>
+                    <p class="text-gray-600 mb-4">Maintenance et réparation de réservoirs cryogéniques, installation d'indicateurs de niveau liquide, réparation de manomètres et installation de réseaux gaz industriels.</p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Réservoirs cryogéniques</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Indicateurs de niveau</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Réseaux gaz industriels</li>
+                    </ul>
+                    <a href="#cryo-details" class="text-accent font-medium inline-flex items-center service-link">En savoir plus <i class="fas fa-arrow-right ml-2 text-sm"></i></a>
+                </div>
+                
+                <!-- Service Card 6: Support Technique 24/7 (Keep as is from new theme) -->
+                <div class="service-card bg-white rounded-xl p-6">
+                    <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6">
+                        <i class="fas fa-headset text-accent text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">Support Technique 24/7</h3>
+                    <p class="text-gray-600 mb-4">Assistance technique permanente pour tous nos services, interventions d'urgence et support téléphonique pour répondre à vos besoins critiques.</p>
+                    <ul class="mb-6 space-y-2">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Assistance téléphonique</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Interventions d'urgence</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Support en ligne</li>
+                    </ul>
+                    <!-- Note: Ce lien n'a pas de section détaillée spécifique à défiler, il redirige vers le contact.
+                         Le script JavaScript le gérera en redirigeant directement vers la section #contact. -->
+                    <a href="#contact" class="text-accent font-medium inline-flex items-center service-link">Nous contacter <i class="fas fa-arrow-right ml-2 text-sm"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="apropos" class="py-16 bg-light">
+        <div class="container mx-auto px-4">
+            <!-- Sur mobile (flex-col), l'ordre est inversé. Sur md et plus (flex-row), l'ordre par défaut est maintenu. -->
+            <div class="flex flex-col-reverse md:flex-row items-center gap-12">
+                <div class="md:w-3/5">
+                    <h2 class="text-3xl font-bold text-secondary mb-6 section-title">À Propos de Cryolor Services</h2>
+                    <p class="text-gray-600 mb-6">
+                        Cryolor services a des techniciens experts dans le domaine depuis des années. Nous mettons à votre disposition une expertise reconnue dans plusieurs domaines clés.
+                        Nous nous engageons à assurer la sécurité, l'efficacité et la pérennité de vos installations grâce à notre équipe d'experts passionnés et expérimentés.
+                    </p>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-start">
+                            <div class="bg-accent rounded-full p-2 mt-1">
+                                <i class="fas fa-check-circle text-white text-sm"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-bold text-secondary mb-1">Expertise Certifiée</h4>
+                                <p class="text-gray-600">Nos techniciens possèdent des certifications dans leurs domaines respective et suivent régulièrement des formations.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-accent rounded-full p-2 mt-1">
+                                <i class="fas fa-check-circle text-white text-sm"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-bold text-secondary mb-1">Réactivité</h4>
+                                <p class="text-gray-600">Nous intervenons rapidement pour minimiser les temps d'arrêt de vos équipements critiques.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-accent rounded-full p-2 mt-1">
+                                <i class="fas fa-check-circle text-white text-sm"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-bold text-secondary mb-1">Solutions Personnalisées</h4>
+                                <p class="text-gray-600">Chaque client est unique, c'est pourquoi nous adaptons nos solutions à vos besoins spécifiques.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="#contact" class="bg-accent text-white font-bold py-3 px-8 rounded-full inline-flex items-center hover:bg-primary transition duration-300">
+                        Demander un devis <i class="fas fa-arrow-right ml-3"></i>
+                    </a>
+                </div>
+                <div class="md:w-2/5">
+                    <div class="rounded-xl overflow-hidden shadow-lg">
+                        <img src="./images/image-a-propos-cryolor.png" alt="Image A Propos Cryolor" class="w-full h-auto object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Services Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-secondary mb-4 section-title inline-block">Détails de nos Services</h2>
+                <p class="text-gray-600 mt-6">Découvrez en détail l'étendue de notre expertise dans chaque domaine de spécialisation.</p>
+            </div>
+            
+            <!-- Medical Equipment Details -->
+            <div id="medical-details" class="bg-light rounded-xl p-8 mb-12">
+                <div class="flex flex-wrap items-center justify-between gap-6 mb-8">
+                    <h3 class="text-2xl font-bold text-secondary">Appareils Médicaux</h3>
+                    <div class="flex items-center">
+                        <div class="bg-accent rounded-full p-3 mr-3">
+                            <i class="fas fa-stethoscope text-white text-xl"></i>
+                        </div>
+                        <span class="text-accent font-medium">Service Médical</span>
+                    </div>
+                </div>
+                
+                <p class="text-gray-700 mb-8">Nous sommes ravis de vous présenter notre service spécialisé dans la réparation et l'entretien d'appareils médicaux. Notre équipe d'experts qualifiés s'engage à garantir le bon fonctionnement et la sécurité de vos équipements médicaux essentiels.</p>
+                
+                <!-- MODIFIED: Two-column grid for accordions on left, note on right, aligned bottom -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left Column for Accordions -->
+                    <div class="flex flex-col space-y-4">
+                        <div class="accordion mb-4 bg-white rounded-lg overflow-hidden">
+                            <button class="accordion-header w-full text-left p-4 font-bold text-secondary flex justify-between items-center">
+                                <span>Diagnostic Précis</span>
+                                <i class="accordion-icon fas fa-chevron-down text-accent"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 pt-0">
+                                    <p class="text-gray-600">Évaluation complète des appareils pour identifier les problèmes techniques avec précision grâce à des équipements de pointe.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion mb-4 bg-white rounded-lg overflow-hidden">
+                            <button class="accordion-header w-full text-left p-4 font-bold text-secondary flex justify-between items-center">
+                                <span>Réparation Rapide</span>
+                                <i class="accordion-icon fas fa-chevron-down text-accent"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 pt-0">
+                                    <p class="text-gray-600">Interventions sur site ou en atelier pour minimiser les temps d'arrêt. Remplacement de pièces défectueuses avec des composants certifiés.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion mb-4 bg-white rounded-lg overflow-hidden">
+                            <button class="accordion-header w-full text-left p-4 font-bold text-secondary flex justify-between items-center">
+                                <span>Entretien Préventif</span>
+                                <i class="accordion-icon fas fa-chevron-down text-accent"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 pt-0">
+                                    <p class="text-gray-600">Programmes de maintenance réguliers pour prolonger la durée de vie de vos équipements. Vérifications de sécurité et conformité aux normes en vigueur.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion mb-4 bg-white rounded-lg overflow-hidden">
+                            <button class="accordion-header w-full text-left p-4 font-bold text-secondary flex justify-between items-center">
+                                <span>Formation</span>
+                                <i class="accordion-icon fas fa-chevron-down text-accent"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 pt-0">
+                                    <p class="text-gray-600">Sessions de formation pour votre personnel sur l'utilisation et l'entretien des appareils pour optimiser leur utilisation et prévenir les pannes.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion mb-4 bg-white rounded-lg overflow-hidden">
+                            <button class="accordion-header w-full text-left p-4 font-bold text-secondary flex justify-between items-center">
+                                <span>Assistance Technique</span>
+                                <i class="accordion-icon fas fa-chevron-down text-accent"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 pt-0">
+                                    <p class="text-gray-600">Support téléphonique et en ligne pour répondre à vos questions et préoccupations en temps réel, avec possibilité d'intervention rapide si nécessaire.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column for the Note, aligned to bottom -->
+                    <div class="flex flex-col justify-end">
+                        <div class="bg-white rounded-lg p-4 border border-blue-100">
+                            <div class="flex">
+                                <div class="mr-3 text-accent">
+                                    <i class="fas fa-info-circle text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-gray-600">Tous nos techniciens sont formés aux normes médicales en vigueur et travaillent avec des équipements certifiés pour garantir la sécurité des patients.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h4 class="text-xl font-bold text-secondary mb-6">Galerie Photos : Appareils Médicaux</h4>
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
+                            <img src="./images/medical-appareil-1.png" alt="Image d'un appareil médical 1">
+                            <div class="gallery-overlay"><p class="font-medium">Diagnostic d'appareil médical</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/medical-appareil-2.png" alt="Image d'un appareil médical 2">
+                            <div class="gallery-overlay"><p class="font-medium">Formation technique</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/medical-appareil-3.png" alt="Image d'un appareil médical 3">
+                            <div class="gallery-overlay"><p class="font-medium">Maintenance préventive</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/medical-appareil-4.png" alt="Image d'un appareil médical 4">
+                            <div class="gallery-overlay"><p class="font-medium">Réparation sur site</p></div>
+                        </div>
+                        <!-- New Medical Images -->
+                        <div class="gallery-item">
+                            <img src="./images/medical-appareil-5.png" alt="Image d'un appareil médical 5">
+                            <div class="gallery-overlay"><p class="font-medium">Calibration d'équipement</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/medical-appareil-6.png" alt="Image d'un appareil médical 6">
+                            <div class="gallery-overlay"><p class="font-medium">Installation de nouveaux appareils</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/medical-appareil-7.png" alt="Image d'un appareil médical 7">
+                            <div class="gallery-overlay"><p class="font-medium">Support technique à distance</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/medical-appareil-8.png" alt="Image d'un appareil médical 8">
+                            <div class="gallery-overlay"><p class="font-medium">Test de performance</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Électricité, Sécurité et Réseaux Details -->
+            <div id="electricite-details" class="bg-light rounded-xl p-8 mb-12">
+                <div class="flex flex-wrap items-center justify-between gap-6 mb-8">
+                    <h3 class="text-2xl font-bold text-secondary">Électricité, Sécurité & Réseaux</h3>
+                    <div class="flex items-center">
+                        <div class="bg-accent rounded-full p-3 mr-3">
+                            <i class="fas fa-plug text-white text-xl"></i>
+                        </div>
+                        <span class="text-accent font-medium">Service Électricité</span>
+                    </div>
+                </div>
+                
+                <p class="text-gray-700 mb-8">Notre équipe d'experts est passionnée et expérimentée dans l'électricité, la sécurité et les réseaux. Nous proposons des solutions complètes pour garantir la performance et la fiabilité de vos infrastructures.</p>
+                
+                <!-- MODIFIED: Two-column grid for accordions on left, note on right, aligned bottom -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left Column for Accordions -->
+                    <div class="flex flex-col space-y-4">
+                        <div class="accordion mb-4 bg-white rounded-lg overflow-hidden">
+                            <button class="accordion-header w-full text-left p-4 font-bold text-secondary flex justify-between items-center">
+                                <span>Électricité</span>
+                                <i class="accordion-icon fas fa-chevron-down text-accent"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 pt-0">
+                                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                        <li>**Armoires Électriques** : Conception, installation et réparation d'armoires électriques personnalisées.</li>
+                                        <li>**Électricité de Bâtiment** : Réalisation complète des installations électriques pour bâtiments résidentiels et commerciaux, mise aux normes et dépannage rapide.</li>
+                                        <li>**Tirage de Câble en Sous-Sol** : Tirage de câbles électriques, informatiques et de communication en respectant les normes de sécurité.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion mb-4 bg-white rounded-lg overflow-hidden">
+                            <button class="accordion-header w-full text-left p-4 font-bold text-secondary flex justify-between items-center">
+                                <span>Caméras de Surveillance & Systèmes d'Alarme</span>
+                                <i class="accordion-icon fas fa-chevron-down text-accent"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 pt-0">
+                                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                        <li>**Installation de Systèmes de Caméras de Surveillance** : Évaluation des besoins, installation complète (caméras, DVR/NVR, câblage et configuration).</li>
+                                        <li>**Réparation de Systèmes de Caméras de Surveillance** : Diagnostic et maintenance préventive pour garantir le bon fonctionnement.</li>
+                                        <li>**Systèmes d'Alarme** : Mise en place et entretien de systèmes d'alarme adaptés à vos besoins.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion mb-4 bg-white rounded-lg overflow-hidden">
+                            <button class="accordion-header w-full text-left p-4 font-bold text-secondary flex justify-between items-center">
+                                <span>Réseau Informatique et Téléphonique</span>
+                                <i class="accordion-icon fas fa-chevron-down text-accent"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 pt-0">
+                                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                        <li>**Installation et Réparation** : Fibre optique, câbles coaxiaux et réseaux locaux (LAN).</li>
+                                        <li>**Préparation des Salles de Conférences** : Installation d'équipements audiovisuels et support technique.</li>
+                                        <li>**Développement de Solutions Serveurs** : Mise en place de serveurs pour le partage, le stockage et la sécurité des données.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column for the Note, aligned to bottom -->
+                    <div class="flex flex-col justify-end">
+                        <div class="bg-white rounded-lg p-4 border border-blue-100">
+                            <div class="flex">
+                                <div class="mr-3 text-accent">
+                                    <i class="fas fa-info-circle text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-gray-600">Nous assurons des installations conformes aux normes de sécurité les plus strictes pour une tranquillité d'esprit totale.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h4 class="text-xl font-bold text-secondary mb-6">Galerie Photos : Électricité, Sécurité et Réseaux</h4>
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
+                            <img src="./images/electricite-1.png" alt="Image d'électricité 1">
+                            <div class="gallery-overlay"><p class="font-medium">Installation électrique</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/camera-surveillance-1.png" alt="Image de caméra de surveillance 1">
+                            <div class="gallery-overlay"><p class="font-medium">Système de surveillance</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/reseau-fibre-optique.png" alt="Image de réseau de fibre optique">
+                            <div class="gallery-overlay"><p class="font-medium">Câblage réseau</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/securite-batiment.png" alt="Image de sécurité bâtiment">
+                            <div class="gallery-overlay"><p class="font-medium">Sécurité bâtiment</p></div>
+                        </div>
+                        <!-- New Electrical/Security Images -->
+                        <div class="gallery-item">
+                            <img src="./images/electricite-2.png" alt="Image d'électricité 2">
+                            <div class="gallery-overlay"><p class="font-medium">Installation d'armoires électriques</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/alarme-incendie.png" alt="Image d'alarme incendie">
+                            <div class="gallery-overlay"><p class="font-medium">Préparation salle de réunion</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/serveur-reseau.png" alt="Image de serveur réseau">
+                            <div class="gallery-overlay"><p class="font-medium">Maintenance de serveurs</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/tirage-cable.png" alt="Image de tirage de câble">
+                            <div class="gallery-overlay"><p class="font-medium">Tirage de câbles en sous-sol</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plomberie & Chauffage Details -->
+            <div id="plomberie-details" class="bg-light rounded-xl p-8 mb-12">
+                <div class="flex flex-wrap items-center justify-between gap-6 mb-8">
+                    <h3 class="text-2xl font-bold text-secondary">Plomberie & Chauffage</h3>
+                    <div class="flex items-center">
+                        <div class="bg-accent rounded-full p-3 mr-3">
+                            <i class="fas fa-faucet text-white text-xl"></i>
+                        </div>
+                        <span class="text-accent font-medium">Service Plomberie</span>
+                    </div>
+                </div>
+                
+                <p class="text-gray-700 mb-8">Cryolor Services est une entreprise reconnue en plomberie et chauffage, avec une équipe de professionnels qualifiés et expérimentés. Nous offrons des solutions adaptées à vos besoins, garantissant confort et sécurité.</p>
+                
+                <!-- MODIFIED: Two-column grid for accordions on left, note on right, aligned bottom -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left Column for Accordions -->
+                    <div class="flex flex-col space-y-4">
+                        <div class="accordion mb-4 bg-white rounded-lg overflow-hidden">
+                            <button class="accordion-header w-full text-left p-4 font-bold text-secondary flex justify-between items-center">
+                                <span>Réparation de Chauffage</span>
+                                <i class="accordion-icon fas fa-chevron-down text-accent"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 pt-0">
+                                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                        <li>**Chauffage Central** : Diagnostic, réparation de chaudières (gaz, fioul, électrique), entretien préventif et détection des fuites.</li>
+                                        <li>**Chauffe-eau** : Réparation, entretien, détartrage et remplacement des chauffe-eau électriques et à gaz.</li>
+                                        <li>**Cuisinières** : Intervention sur cuisinières à gaz et électriques, incluant les systèmes d’allumage et de sécurité.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion mb-4 bg-white rounded-lg overflow-hidden">
+                            <button class="accordion-header w-full text-left p-4 font-bold text-secondary flex justify-between items-center">
+                                <span>Installation Plomberie</span>
+                                <i class="accordion-icon fas fa-chevron-down text-accent"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 pt-0">
+                                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                        <li>**Installation de Gaz** : Mise en conformité, raccordement d'appareils (chaudières, cuisinières) et maintenance préventive.</li>
+                                        <li>**Installation d'Eau** : Raccordement complet des canalisations d'eau potable, installation de sanitaires (lavabos, douches, toilettes) et systèmes de filtration.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column for the Note, aligned to bottom -->
+                    <div class="flex flex-col justify-end">
+                        <div class="bg-white rounded-lg p-4 border border-blue-100">
+                            <div class="flex">
+                                <div class="mr-3 text-accent">
+                                    <i class="fas fa-info-circle text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-gray-600">Nous utilisons des matériaux durables et des techniques modernes pour des installations fiables et pérennes.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h4 class="text-xl font-bold text-secondary mb-6">Galerie Photos : Plomberie et Chauffage</h4>
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
+                            <img src="./images/plomberie-chauffage-1.png" alt="Image de plomberie et chauffage 1">
+                            <div class="gallery-overlay"><p class="font-medium">Réparation de chaudière</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/plomberie-chauffage-2.png" alt="Image de plomberie et chauffage 2">
+                            <div class="gallery-overlay"><p class="font-medium">Installation de plomberie</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/plomberie-chauffage-3.png" alt="Image de plomberie et chauffage 3">
+                            <div class="gallery-overlay"><p class="font-medium">Entretien chauffe-eau</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/plomberie-chauffage-4.png" alt="Image de plomberie et chauffage 4">
+                            <div class="gallery-overlay"><p class="font-medium">Raccordement gaz</p></div>
+                        </div>
+                        <!-- New Plumbing/Heating Images -->
+                        <div class="gallery-item">
+                            <img src="./images/plomberie-chauffage-5.png" alt="Image de plomberie et chauffage 5">
+                            <div class="gallery-overlay"><p class="font-medium">Installation de sanitaires</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/plomberie-chauffage-6.png" alt="Image de plomberie et chauffage 6">
+                            <div class="gallery-overlay"><p class="font-medium">Détartrage de chauffe-eau</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/plomberie-chauffage-7.png" alt="Image de plomberie et chauffage 7">
+                            <div class="gallery-overlay"><p class="font-medium">Réparation de fuites</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/plomberie-chauffage-8.png" alt="Image de plomberie et chauffage 8">
+                            <div class="gallery-overlay"><p class="font-medium">Systèmes de filtration</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Froid Industriel & Climatisation Details -->
+            <div id="froid-details" class="bg-light rounded-xl p-8 mb-12">
+                <div class="flex flex-wrap items-center justify-between gap-6 mb-8">
+                    <h3 class="text-2xl font-bold text-secondary">Froid Industriel & Climatisation</h3>
+                    <div class="flex items-center">
+                        <div class="bg-accent rounded-full p-3 mr-3">
+                            <i class="fas fa-snowflake text-white text-xl"></i>
+                        </div>
+                        <span class="text-accent font-medium">Service Froid</span>
+                    </div>
+                </div>
+                
+                <p class="text-gray-700 mb-8">En tant que frigoristes expérimentés, nous sommes votre partenaire de confiance pour toutes vos installations et réparations frigorifiques. Nous mettons notre savoir-faire à votre service pour vous garantir un confort optimal au quotidien.</p>
+                
+                <!-- MODIFIED: Two-column grid for accordions on left, note on right, aligned bottom -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left Column for Accordions -->
+                    <div class="flex flex-col space-y-4">
+                        <div class="accordion mb-4 bg-white rounded-lg overflow-hidden">
+                            <button class="accordion-header w-full text-left p-4 font-bold text-secondary flex justify-between items-center">
+                                <span>Installation de Systèmes Frigorifiques</span>
+                                <i class="accordion-icon fas fa-chevron-down text-accent"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 pt-0">
+                                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                        <li>**Climatiseurs** : Évaluation des besoins, installation professionnelle et mise en service pour climatiseurs résidentiels et commerciaux.</li>
+                                        <li>**Chambres Froides** : Conception sur mesure, installation complète (isolation, systèmes de refroidissement, contrôles d’accès) et tests de performance.</li>
+                                        <li>**Réfrigérateurs et Congélateurs** : Installation d'unités réfrigérantes pour les commerces, restaurants et industries, avec configuration pour optimiser la consommation énergétique.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion mb-4 bg-white rounded-lg overflow-hidden">
+                            <button class="accordion-header w-full text-left p-4 font-bold text-secondary flex justify-between items-center">
+                                <span>Maintenance Préventive et Corrective</span>
+                                <i class="accordion-icon fas fa-chevron-down text-accent"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 pt-0">
+                                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                        <li>**Entretien Régulier** : Visites programmées pour nettoyer, vérifier et ajuster les équipements, incluant le contrôle des fluides frigorifiques et la détection de fuites.</li>
+                                        <li>**Réparation Rapide** : Diagnostic précis et intervention d'urgence 24/7 pour toute panne ou dysfonctionnement.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Accordion for Spécialités Techniques is now correctly placed in the left column -->
+                        <div class="accordion mb-4 bg-white rounded-lg overflow-hidden">
+                            <button class="accordion-header w-full text-left p-4 font-bold text-secondary flex justify-between items-center">
+                                <span>Spécialités Techniques</span>
+                                <i class="accordion-icon fas fa-chevron-down text-accent"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 pt-0">
+                                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                        <li>**Fentene Fresh** : Services complets pour les systèmes Fentene Fresh, incluant la mise en service et la maintenance.</li>
+                                        <li>**Systèmes de Contrôle Climatique** : Intégration de solutions intelligentes pour le contrôle à distance et la gestion de l’énergie.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column for the Note, aligned to bottom -->
+                    <div class="flex flex-col justify-end">
+                        <div class="bg-white rounded-lg p-4 border border-blue-100">
+                            <div class="flex">
+                                <div class="mr-3 text-accent">
+                                    <i class="fas fa-info-circle text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-gray-600">Nos solutions sont conçues pour optimiser l'efficacité énergétique et la durée de vie de vos systèmes frigorifiques.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h4 class="text-xl font-bold text-secondary mb-6">Galerie Photos : Froid Industriel et Climatisation</h4>
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
+                            <img src="./images/froid-climatisation-1.png" alt="Image de climatisation 1">
+                            <div class="gallery-overlay"><p class="font-medium">Climatisation</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/froid-chambre-froide-1.png" alt="Image de chambre froide 1">
+                            <div class="gallery-overlay"><p class="font-medium">Chambre froide</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/froid-refrigeration-industrielle.png" alt="Image de réfrigération industrielle">
+                            <div class="gallery-overlay"><p class="font-medium">Réfrigération industrielle</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/froid-systeme-1.png" alt="Image de système de froid 1">
+                            <div class="gallery-overlay"><p class="font-medium">Système de froid</p></div>
+                        </div>
+                        <!-- New Industrial Refrigeration/AC Images -->
+                        <div class="gallery-item">
+                            <img src="./images/froid-climatisation-2.png" alt="Image de climatisation 2">
+                            <div class="gallery-overlay"><p class="font-medium">Installation de climatiseur</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/froid-chambre-froide-2.png" alt="Image de chambre froide 2">
+                            <div class="gallery-overlay"><p class="font-medium">Maintenance de chambre froide</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/froid-refrigerateur-commercial.png" alt="Image de réfrigérateur commercial">
+                            <div class="gallery-overlay"><p class="font-medium">Réparation de réfrigérateur commercial</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/froid-controle-climatique.png" alt="Image de contrôle climatique">
+                            <div class="gallery-overlay"><p class="font-medium">Système de contrôle climatique</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Maintenance Cryogénique Details -->
+            <div id="cryo-details" class="bg-light rounded-xl p-8 mb-12">
+                <div class="flex flex-wrap items-center justify-between gap-6 mb-8">
+                    <h3 class="text-2xl font-bold text-secondary">Maintenance Cryogénique</h3>
+                    <div class="flex items-center">
+                        <div class="bg-accent rounded-full p-3 mr-3">
+                            <i class="fas fa-flask text-white text-xl"></i>
+                        </div>
+                        <span class="text-accent font-medium">Service Cryogénique</span>
+                    </div>
+                </div>
+                
+                <p class="text-gray-700 mb-8">Nous offrons des services spécialisés dans la maintenance cryogénique, garantissant la sécurité, l'efficacité et la fiabilité de vos systèmes cryogéniques, notamment pour les réservoirs d'oxygène, d'azote et de CO2.</p>
+                
+                <!-- MODIFIED: Two-column grid for accordions on left, note on right, aligned bottom -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left Column for Accordions -->
+                    <div class="flex flex-col space-y-4">
+                        <div class="accordion mb-4 bg-white rounded-lg overflow-hidden">
+                            <button class="accordion-header w-full text-left p-4 font-bold text-secondary flex justify-between items-center">
+                                <span>Maintenance et Réparation des Réservoirs Cryogéniques</span>
+                                <i class="accordion-icon fas fa-chevron-down text-accent"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 pt-0">
+                                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                        <li>**Inspection Visuelle et Technique** : Inspections régulières pour détecter les signes d'usure, de corrosion ou de fuites, incluant des tests non destructifs (TND).</li>
+                                        <li>**Entretien Préventif** : Élaboration d'un plan de maintenance sur mesure, incluant nettoyage, vérification des soupapes de sécurité et calibration des instruments.</li>
+                                        <li>**Réparation et Rénovation** : Intervention rapide pour effectuer des réparations, y compris le soudage cryogénique et le remplacement de composants endommagés avec des matériaux certifiés.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion mb-4 bg-white rounded-lg overflow-hidden">
+                            <button class="accordion-header w-full text-left p-4 font-bold text-secondary flex justify-between items-center">
+                                <span>Indicateurs de Niveau Liquide & Manomètres</span>
+                                <i class="accordion-icon fas fa-chevron-down text-accent"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 pt-0">
+                                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                        <li>**Installation Indicateurs** : Installation de systèmes d'indication de niveau liquide adaptés à vos réservoirs, garantissant une surveillance précise.</li>
+                                        <li>**Réparation Manomètres** : Diagnostic et intervention rapide pour réparer ou remplacer les manomètres défectueux (analogiques ou numériques).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion mb-4 bg-white rounded-lg overflow-hidden">
+                            <button class="accordion-header w-full text-left p-4 font-bold text-secondary flex justify-between items-center">
+                                <span>Installations des Réseaux Gaz Industriels</span>
+                                <i class="accordion-icon fas fa-chevron-down text-accent"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 pt-0">
+                                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                        <li>**Conception Personnalisée** : Conception de réseaux de distribution de gaz industriels sur mesure, en tenant compte des spécificités de votre site.</li>
+                                        <li>**Installation et Mise en Service** : Installation complète des réseaux avec test de mise en service pour garantir un fonctionnement optimal et le respect des normes.</li>
+                                        <li>**Maintenance Continue** : Suivi régulier et maintenance préventive pour assurer la pérennité de vos installations.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column for the Note, aligned to bottom -->
+                    <div class="flex flex-col justify-end">
+                        <div class="bg-white rounded-lg p-4 border border-blue-100">
+                            <div class="flex">
+                                <div class="mr-3 text-accent">
+                                    <i class="fas fa-info-circle text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-gray-600">Nous assurons l'intégrité et la performance de vos installations cryogéniques avec rigueur et expertise.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h4 class="text-xl font-bold text-secondary mb-6">Galerie Photos : Maintenance Cryogénique</h4>
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
+                            <img src="./images/cryo-reservoir-1.png" alt="Image de réservoir cryogénique 1">
+                            <div class="gallery-overlay"><p class="font-medium">Réservoir Cryogénique</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/cryo-reseau-gaz-industriel-1.png" alt="Image de réseau de gaz industriel 1">
+                            <div class="gallery-overlay"><p class="font-medium">Réseau Gaz Industriel</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/cryo-maintenance-1.png" alt="Image de maintenance cryogénique 1">
+                            <div class="gallery-overlay"><p class="font-medium">Maintenance Cryogénique</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/cryo-manometre.png" alt="Image de manomètre cryogénique">
+                            <div class="gallery-overlay"><p class="font-medium">Manomètre Cryogénique</p></div>
+                        </div>
+                        <!-- New Cryogenic Images -->
+                        <div class="gallery-item">
+                            <img src="./images/cryo-inspection-reservoir.png" alt="Image d'inspection de réservoir">
+                            <div class="gallery-overlay"><p class="font-medium">Inspection de réservoir</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/cryo-calibration-manometre.png" alt="Image de calibration de manomètre">
+                            <div class="gallery-overlay"><p class="font-medium">Réparation citerne d'azote</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/cryo-installation-tuyauterie.png" alt="Image d'installation de tuyauterie">
+                            <div class="gallery-overlay"><p class="font-medium">Installation de tuyauterie gaz</p></div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="./images/cryo-test-pression.png" alt="Image de test de pression cryogénique">
+                            <div class="gallery-overlay"><p class="font-medium">Test de pression cryogénique</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Removed Testimonials Section -->
+    <!-- <section id="temoignages" class="py-16 bg-light">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-secondary mb-4 section-title inline-block">Ce que disent nos clients</h2>
+                <p class="text-gray-600 mt-6">Découvrez les témoignages de nos clients satisfaits par la qualité de nos services.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                Testimonial 1
+                <div class="testimonial-card bg-white rounded-xl p-6">
+                    <div class="flex items-center mb-4">
+                        <img src="https://placehold.co/64x64/E0F2F7/000000?text=DM" alt="Image de Dr. Martin Dubois" class="rounded-full w-16 h-16 object-cover border-2 border-primary">
+                        <div class="ml-4">
+                            <h4 class="font-bold text-secondary">Dr. Martin Dubois</h4>
+                            <p class="text-gray-500 text-sm">Centre Médical Saint-Louis</p>
+                        </div>
+                    </div>
+                    <div class="flex mb-3 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 italic">"Le service de maintenance de nos appareils médicaux par Cryolor Services est exceptionnel. Leur réactivité et leur expertise ont grandement amélioré la fiabilité de nos équipements."</p>
+                </div>
+                
+                Testimonial 2
+                <div class="testimonial-card bg-white rounded-xl p-6">
+                    <div class="flex items-center mb-4">
+                        <img src="https://placehold.co/64x64/E0F2F7/000000?text=SL" alt="Image de Sophie Lambert" class="rounded-full w-16 h-16 object-cover border-2 border-primary">
+                        <div class="ml-4">
+                            <h4 class="font-bold text-secondary">Sophie Lambert</h4>
+                            <p class="text-gray-500 text-sm">Restaurant Le Gourmet</p>
+                        </div>
+                    </div>
+                    <div class="flex mb-3 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 italic">"L'équipe de Cryolor a installé et maintenu nos systèmes frigorifiques avec un professionnalisme remarquable. Leur connaissance des solutions Fentene Fresh a été précieuse pour notre cuisine."</p>
+                </div>
+                
+                Testimonial 3
+                <div class="testimonial-card bg-white rounded-xl p-6">
+                    <div class="flex items-center mb-4">
+                        <img src="https://placehold.co/64x64/E0F2F7/000000?text=PM" alt="Image de Pierre Moreau" class="rounded-full w-16 h-16 object-cover border-2 border-primary">
+                        <div class="ml-4">
+                            <h4 class="font-bold text-secondary">Pierre Moreau</h4>
+                            <p class="text-gray-500 text-sm">Laboratoires Scientifiques</p>
+                        </div>
+                    </div>
+                    <div class="flex mb-3 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 italic">"La maintenance cryogénique de nos réservoirs par Cryolor Services est toujours effectuée avec précision. Leur équipe technique maîtrise parfaitement les spécificités de nos équipements."</p>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-secondary mb-4 section-title inline-block">Contactez-nous</h2>
+                <p class="text-gray-600 mt-6">Pour obtenir un devis personnalisé ou pour toute question concernant nos services, n'hésitez à nous contacter.</p>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row gap-12">
+                <div class="lg:w-1/2">
+                    <!-- Formulaire de contact avec action mailto -->
+                    <form class="contact-form space-y-6" action="mailto:sarlcryolorservices@gmail.com?subject=Demande%20de%20contact%20Cryolor%20Services&body=Message%20envoy%C3%A9%20depuis%20le%20site%20web%20Cryolor%20Services.%0A%0A---%0A%0AVeuillez%20saisir%20vos%20informations%20ci-dessous:%0A%0ANom%20complet:%20%0AAdresse%20email:%20%0AT%C3%A9l%C3%A9phone:%20%0AService%20demand%C3%A9:%20%0AMessage:%20%0A---" method="POST" enctype="text/plain">
+                        <div>
+                            <label for="name" class="block text-gray-700 font-medium mb-2">Nom complet</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:border-accent" placeholder="Votre nom">
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Adresse email</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:border-accent" placeholder="Votre email">
+                        </div>
+                        
+                        <div>
+                            <label for="phone" class="block text-gray-700 font-medium mb-2">Téléphone</label>
+                            <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:border-accent" placeholder="Votre numéro de téléphone">
+                        </div>
+                        
+                        <div>
+                            <label for="service" class="block text-gray-700 font-medium mb-2">Service demandé</label>
+                            <select id="service" name="service" class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:border-accent">
+                                <option value="">Sélectionnez un service</option>
+                                <option value="medical">Appareils Médicaux</option>
+                                <option value="electricite">Électricité, Sécurité & Réseaux</option>
+                                <option value="plomberie">Plomberie & Chauffage</option>
+                                <option value="froid">Froid Industriel & Climatisation</option>
+                                <option value="cryo">Maintenance Cryogénique</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:border-accent" placeholder="Décrivez votre besoin"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-accent text-white font-bold py-3 px-8 rounded-lg hover:bg-primary transition duration-300">
+                            Envoyer votre demande
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <div class="bg-light rounded-xl p-8 h-full">
+                        <h3 class="text-xl font-bold text-secondary mb-6">Informations de contact</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="bg-accent rounded-full p-3 mr-4">
+                                    <i class="fas fa-map-marker-alt text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-secondary mb-1">Adresse</h4>
+                                    <p class="text-gray-600">Rue cité djeloul Soukra - Ouargla</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="bg-accent rounded-full p-3 mr-4">
+                                    <i class="fas fa-phone-alt text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-secondary mb-1">Téléphone/WhatsApp</h4>
+                                    <p class="text-gray-600"><a href="tel:+213671647447" class="text-gray-600 hover:text-accent">+213 671 64 74 47</a></p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="bg-accent rounded-full p-3 mr-4">
+                                    <i class="fas fa-envelope text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-secondary mb-1">Email</h4>
+                                    <p class="text-gray-600"><a href="mailto:sarlcryolorservices@gmail.com" class="text-gray-600 hover:text-white">sarlcryolorservices@gmail.com</a></p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="bg-accent rounded-full p-3 mr-4">
+                                    <i class="fas fa-clock text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-secondary mb-1">Horaires</h4>
+                                    <p class="text-gray-600">Samedi - Jeudi: 8h00 - 17h00</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <h4 class="font-bold text-secondary mb-4">Suivez-nous</h4>
+                            <div class="flex space-x-4">
+                                <a href="#" class="bg-secondary text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-primary transition">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="bg-secondary text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-primary transition">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="#" class="bg-secondary text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-primary transition">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="bg-secondary text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-primary transition">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-secondary text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center mb-6">
+                        <!-- Remplacé le div "CS" par une balise img pour le logo -->
+                        <img src="./images/cryolor-logo.png" alt="Cryolor Services Logo" class="w-12 h-12 object-contain mr-3">
+                        <div>
+                            <h3 class="text-xl font-bold">Cryolor Services</h3>
+                            <p class="text-blue-200 text-sm">Expertise technique</p>
+                        </div>
+                    </div>
+                    <p class="text-blue-100 mb-6">Votre partenaire de confiance pour la maintenance, la réparation et l'installation de vos équipements techniques essentiels.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-blue-200 hover:text-white">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-blue-200 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-blue-200 hover:text-white">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="text-blue-200 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Services</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#medical-details" class="text-blue-200 hover:text-white transition">Appareils Médicaux</a></li>
+                        <li><a href="#electricite-details" class="text-blue-200 hover:text-white transition">Électricité & Réseaux</a></li>
+                        <li><a href="#plomberie-details" class="text-blue-200 hover:text-white transition">Plomberie & Chauffage</a></li>
+                        <li><a href="#froid-details" class="text-blue-200 hover:text-white transition">Froid Industriel</a></li>
+                        <li><a href="#cryo-details" class="text-blue-200 hover:text-white transition">Maintenance Cryogénique</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Liens Utiles</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#accueil" class="text-blue-200 hover:text-white transition">Accueil</a></li>
+                        <li><a href="#apropos" class="text-blue-200 hover:text-white transition">À Propos</a></li>
+                        <li><a href="#services" class="text-blue-200 hover:text-white transition">Services</a></li>
+                        <!-- Removed Testimonials link -->
+                        <li><a href="#contact" class="text-blue-200 hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Contact</h4>
+                    <ul class="space-y-3 text-blue-200">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3"></i>
+                            <span>Rue cité djeloul Soukra - Ouargla</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-3"></i>
+                            <span><a href="tel:+213671647447" class="text-blue-200 hover:text-accent">+213 671 64 74 47</a> (Téléphone/WhatsApp)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3"></i>
+                            <span><a href="mailto:sarlcryolorservices@gmail.com" class="text-blue-200 hover:text-white">sarlcryolorservices@gmail.com</a></span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-clock mt-1 mr-3"></i>
+                            <span>Samedi - Jeudi: 8h00 - 17h00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-blue-800 pt-8 text-center">
+                <p>&copy; 2025 Cryolor Services. Tous droits réservés.</p>
+                <p class="mt-2 text-blue-300">Conçu avec passion et expertise technique.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-top" class="scroll-top bg-accent text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Image Modal -->
+    <div id="image-modal" class="image-modal">
+        <span class="image-modal-close">&times;</span>
+        <div class="image-modal-content">
+            <img id="modal-image" src="" alt="Enlarged Image">
+        </div>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileServicesToggle = document.getElementById('mobile-services-toggle');
+        const mobileServicesDropdown = document.getElementById('mobile-services-dropdown');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Toggle the services dropdown on mobile
+        if (mobileServicesToggle) {
+            mobileServicesToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation(); // Prevents closing the main menu immediately
+                // Toggles the visibility of the entire services dropdown
+                mobileServicesDropdown.classList.toggle('hidden'); 
+                mobileServicesDropdown.classList.toggle('active'); // Apply/remove active class for CSS
+
+                // Toggle chevron icon for the main "Services" link
+                const icon = this.querySelector('i');
+                if (icon) {
+                    if (mobileServicesDropdown.classList.contains('active')) {
+                        icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                    } else {
+                        icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                    }
+                }
+            });
+        }
+
+        // Handle clicks on mobile menu links to close menu or toggle sub-menus
+        // We attach listener to the whole mobile menu and delegate to child links
+        mobileMenu.addEventListener('click', function(e) {
+            // Check if a link was clicked
+            const link = e.target.closest('a[href^="#"]');
+            if (!link) return; // Not a link, do nothing
+
+            const href = link.getAttribute('href');
+
+            // Prevent default to handle smooth scroll and menu close for all links
+            e.preventDefault(); 
+            const targetElement = document.querySelector(href);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+            
+            // Close the main mobile menu
+            mobileMenu.classList.add('hidden'); // Use 'hidden' class to hide it
+            // Also hide the main services dropdown and reset its toggle icon
+            if (mobileServicesDropdown) {
+                mobileServicesDropdown.classList.add('hidden');
+                mobileServicesDropdown.classList.remove('active');
+            }
+            if (mobileServicesToggle) { // Ensure the main services toggle icon is reset
+                const icon = mobileServicesToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                }
+            }
+        });
+
+        // Accordion Functionality for Detailed Services
+        const accordions = document.querySelectorAll('.accordion');
+        accordions.forEach(accordion => {
+            const header = accordion.querySelector('.accordion-header'); // Target the button
+            header.addEventListener('click', () => {
+                // Get the parent container to close other accordions in the same group
+                const parentContainer = accordion.closest('.grid.md\\:grid-cols-2'); // Changed from specific cols to general grid class
+                if (parentContainer) {
+                    parentContainer.querySelectorAll('.accordion.active').forEach(openAccordion => {
+                        if (openAccordion !== accordion) {
+                            openAccordion.classList.remove('active');
+                        }
+                    });
+                }
+                accordion.classList.toggle('active');
+            });
+        });
+        
+        // Scroll to Top Button
+        const scrollTopButton = document.getElementById('scroll-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollTopButton.classList.add('active');
+            } else {
+                scrollTopButton.classList.remove('active');
+            }
+        });
+        
+        scrollTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Adjust scroll-margin-top for sticky header offset
+        const applyScrollMargin = () => {
+            const headerHeight = document.querySelector('header').offsetHeight;
+            // Add a small buffer, e.g., 16px (1rem) for better visual spacing
+            const marginValue = headerHeight + 16; // Add 16px buffer
+            // Now targeting all elements with an ID to ensure scroll-margin-top is applied widely
+            document.querySelectorAll('[id]').forEach(el => {
+                el.style.scrollMarginTop = `${marginValue}px`;
+            });
+        };
+
+        // Apply on initial load
+        window.addEventListener('load', applyScrollMargin);
+        // Re-apply on resize to adjust if header height changes dynamically (e.g., mobile/desktop view changes)
+        window.addEventListener('resize', applyScrollMargin);
+        // Also call it once immediately in case the load event fires late or for initial rendering
+        applyScrollMargin();
+
+        // Fonctionnalité : Rendre toute la carte de service cliquable
+        const serviceCards = document.querySelectorAll('.service-card');
+
+        serviceCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const link = card.querySelector('.service-link'); // Récupère le lien à l'intérieur de la carte
+                if (link && link.href) {
+                    const targetId = link.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Fonctionnalité de la modale d'image
+        const imageModal = document.getElementById('image-modal');
+        const modalImage = document.getElementById('modal-image');
+        const closeModal = document.querySelector('.image-modal-close');
+        const galleryItems = document.querySelectorAll('.gallery-item img');
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation(); // Empêche la propagation du clic à l'élément parent si la carte de service est cliquable
+                modalImage.src = item.src;
+                imageModal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Empêche le défilement du corps
+            });
+        });
+
+        closeModal.addEventListener('click', () => {
+            imageModal.classList.remove('active');
+            document.body.style.overflow = ''; // Rétablit le défilement du corps
+        });
+
+        // Fermer la modale en cliquant en dehors de l'image (sur l'overlay)
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) {
+                imageModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Fermer la modale avec la touche Échap
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && imageModal.classList.contains('active')) {
+                imageModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+</body>
+</html>
